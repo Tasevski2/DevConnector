@@ -1,0 +1,4 @@
+{
+    "mongoURI": "mongodb+srv://viktor:viktor@devconnector-jqzk1.mongodb.net/test?retryWrites=true&w=majority",
+    "jwt_secret": "thisIsMySecret"
+}
