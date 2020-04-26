@@ -10,11 +10,14 @@ const User = require('../../models/User');
 
 
 // @route   GET api/auth
-// @desc    Test route
+// @desc    Return single user
 // @access  Public
 router.get('/', auth, async (req, res) => {
     try {
         const user = await User.findOne({ _id: req.user.id }).select('-password');
+        if(!user) {
+            return res.status(404).json({ msg: "No user found!"});
+        }
         res.status(200).send(user);
     } catch {
         console.log(err);
