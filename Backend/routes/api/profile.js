@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const config = require('config');
+const request = require('request');
 const auth = require('../../middleware/auth');
 const mongoose = require('mongoose');
 const { check, validationResult } = require('express-validator');
@@ -189,5 +191,110 @@ router.put('/experience', [auth, [
         return res.status(500).json({ msg: "Server error!"});
     }    
 });
+
+// @route     DELETE api/profile/experience/:exp_id
+// @desc      Delete experience
+// @access    Private
+router.delete('/experience/:exp_id', auth, async (req, res) => {
+    try {
+        const profile = await Profile.findOne({ user: req.user.id}).select('experience');
+        const newExperiences = profile.experience.filter(exp => {
+            return exp._id != req.params.exp_id;
+        });
+        profile.experience = [...newExperiences];
+        await profile.save();
+        return res.status(200).json({ msg: "Experiene deleted!"});
+    } catch (err) {
+        console.log(err.message);
+        return res.status(500).json({ msg: "Server error!"});
+    }
+});
+
+// @route     PUT api/profile/education
+// @desc      Add education
+// @access    Private
+router.put('/education', [auth, [
+    check('school')
+        .notEmpty().withMessage('School is required!'),
+    check('degree')
+        .notEmpty().withMessage('Degree is required!'),
+    check('fieldofstudy')
+        .notEmpty().withMessage('Field of study is required!'),
+    check('from')
+        .notEmpty().withMessage('From is required!')
+]], async (req, res) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).json({ errors });
+    }
+    const {
+        school,
+        degree,
+        fieldofstudy,
+        from,
+        to,
+        current,
+        description
+    } = req.body;
+    let fields = {};
+    if(school) fields.school = school;
+    if (degree) fields.degree = degree;
+    if (fieldofstudy) fields.fieldofstudy = fieldofstudy;
+    if (from) fields.from = from;
+    if (to) fields.to = to;
+    if (current) fields.current = current;
+    if (description) fields.description = description;
+
+    try {
+        const profile = await Profile.findOne({ user: req.user.id}).select('education');
+        profile.education.unshift(fields);
+        await profile.save();
+        return res.status(200).json({ msg: "Education added!"});
+    } catch (err) {
+        console.error(err.message);
+        return res.status(500).json({ msg: "Server error!"});
+    }    
+});
+
+// @route     DELETE api/profile/education/:edu_id
+// @desc      Delete education
+// @access    Private
+router.delete('/education/:edu_id', auth, async (req, res) => {
+    try {
+        const profile = await Profile.findOne({ user: req.user.id}).select('education');
+        const newEducation = profile.education.filter(edu => edu._id != req.params.edu_id);
+        profile.education = [...newEducation];
+        await profile.save();
+        res.status(200).json({ msg: "Education removed!"});
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).json({ msg: "Server error!"});
+    }
+});
+
+// @route     GET api/profile/github/:username
+// @desc      Get github profile
+// @access    Public
+router.get('/github/:username', (req, res) => {
+    try {
+        const options = {
+        uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${config.get('github_client_id')}&client_secret=${config.get('github_client_secret')}`,
+        method: 'GET',
+        headers: {
+            'user-agent': 'node js'
+        }
+    }
+        request(options, (error, response, body) => {
+            if(error) console.log(error);
+
+            if(response.statusCode !== 200) return res.status(404).json({ msg: "No GitHub profile found!"});
+
+            return res.status(200).json(JSON.parse(body));
+        })
+    } catch (err) {
+        console.log(err.message);
+        res.status(500).json({ msg: "Server error!"});
+    }
+})
 
 module.exports = router;

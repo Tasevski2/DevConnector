@@ -1,4 +1,6 @@
 {
     "mongoURI": "mongodb+srv://viktor:viktor@devconnector-jqzk1.mongodb.net/test?retryWrites=true&w=majority",
-    "jwt_secret": "thisIsMySecret"
+    "jwt_secret": "thisIsMySecret",
+    "github_client_id": "Iv1.f22feac059cd3954",
+    "github_client_secret": "a072ac1b4f2530a19c6265996cf8970a6094fc51"
 }
