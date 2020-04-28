@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
 import { Link } from 'react-router-dom';
+import * as actions from '../../../store/actions/index';
 
-
-const Login = () => {
+const Login = (props) => {
     const [formData, setFormData] = useState({
         email: "",
         password: ""
@@ -17,7 +18,7 @@ const Login = () => {
     }
 
     const onSubmitHandler = (e) => {
-        console.log(formData);
+        props.setAlert("JAS SAM NAJACI", "success");
         e.preventDefault();
     }
     return (
@@ -53,4 +54,16 @@ const Login = () => {
     )
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+    return {
+
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setAlert: (msg, alertType) => dispatch(actions.setAlert(msg, alertType))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

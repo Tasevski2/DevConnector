@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 
 import { Link } from 'react-router-dom';
+import * as actions from '../../../store/actions/index';
 
-const Register = () => {
+const Register = (props) => {
     
     const [ formData, setFormData ] = useState({
         name: "",
@@ -20,7 +22,7 @@ const Register = () => {
 
     const onSubmitHandler = (e) => {
         if(formData.password !== formData.confirmPassword) {
-            console.log("Passwords does not match!");
+            props.setAlert("Passwords does not match!", "danger");
         } else {
             console.log(formData);
         }
@@ -81,4 +83,10 @@ const Register = () => {
     )
 }
 
-export default Register;
+const mapDispatchToProps = dispatch => {
+    return {
+        setAlert: (msg, alertType) => dispatch(actions.setAlert(msg, alertType))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Register);
