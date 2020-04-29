@@ -1,5 +1,8 @@
 export {
-
+    register,
+    loadUser,
+    login,
+    logout
 } from './auth';
 
 export {

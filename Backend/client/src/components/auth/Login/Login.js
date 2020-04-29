@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import * as actions from '../../../store/actions/index';
 
 const Login = (props) => {
@@ -18,8 +19,11 @@ const Login = (props) => {
     }
 
     const onSubmitHandler = (e) => {
-        props.setAlert("JAS SAM NAJACI", "success");
+        props.login(formData.email, formData.password);
         e.preventDefault();
+    }
+    if(props.isAuthenticated) {
+        return <Redirect to='/dashboard'/>
     }
     return (
         <div>
@@ -33,7 +37,6 @@ const Login = (props) => {
                         onChange={formDataHandler}
                         placeholder="Email Address"
                         name="email"
-                        required
                     />
                 </div>
                 <div className="form-group">
@@ -54,15 +57,20 @@ const Login = (props) => {
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
+Login.propTypes = {
+    login: PropTypes.func.isRequired,
+    isAuthenticated: PropTypes.bool
+}
 
+const mapStateToProps = state => {
+    return {
+        isAuthenticated: state.auth.isAuthenticated
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setAlert: (msg, alertType) => dispatch(actions.setAlert(msg, alertType))
+        login: (email, password) => dispatch(actions.login(email, password))
     }
 }
 
