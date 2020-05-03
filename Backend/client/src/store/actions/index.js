@@ -6,8 +6,8 @@ export {
 } from './auth';
 
 export {
-
-} from './profiles';
+    profileFetch
+} from './profile';
 
 export {
     setAlert

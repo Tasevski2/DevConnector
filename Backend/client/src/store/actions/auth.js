@@ -114,6 +114,7 @@ export const login = (email, password) => {
             dispatch(loginSuccessAction(res.data.token));
             dispatch(loadUser());
         } catch (err) {
+            console.log(err);
             const errors = err.response.data.errors;
             if(errors) errors.forEach(error => 
                 dispatch(actions.setAlert(error.msg, 'danger')));

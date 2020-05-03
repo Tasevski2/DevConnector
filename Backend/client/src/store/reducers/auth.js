@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
     token: localStorage.getItem('token'),
-    isAuthenticated: null,
+    isAuthenticated: false,
     loading: null,
     user: null
 };
@@ -39,7 +39,7 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 token: null,
-                isAuthenticated: null,
+                isAuthenticated: false,
                 loading: false
             }
         default: return state;

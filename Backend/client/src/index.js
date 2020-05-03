@@ -9,7 +9,7 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import authReducer from './store/reducers/auth';
-import profilesReducer from './store/reducers/profiles';
+import profilesReducer from './store/reducers/profile';
 import alertReducer from './store/reducers/alert';
 
 const rootReducer = combineReducers({
