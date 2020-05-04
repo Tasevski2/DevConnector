@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as actions from '../../../store/actions/index';
 
 const Login = (props) => {
@@ -22,9 +22,7 @@ const Login = (props) => {
         props.login(formData.email, formData.password);
         e.preventDefault();
     }
-    if(props.isAuthenticated) {
-        return <Redirect to='/dashboard'/>
-    }
+
     return (
         <div>
             <h1 className="large text-primary">Sign In</h1>
@@ -62,11 +60,6 @@ Login.propTypes = {
     isAuthenticated: PropTypes.bool
 }
 
-const mapStateToProps = state => {
-    return {
-        isAuthenticated: state.auth.isAuthenticated
-    }
-}
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -74,4 +67,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);

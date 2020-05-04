@@ -8,6 +8,7 @@ const { check, validationResult } = require('express-validator');
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
+const Post = require('../../models/Post');
 
 // @route     GET api/profile/me
 // @desc      Get my profile
@@ -25,7 +26,7 @@ router.get('/me', auth, async (req, res) => {
 
 });
 
-// @route     GET api/profile
+// @route     POST api/profile
 // @desc      Create and update profile
 // @access    Private
 router.post('/', [auth, [
@@ -36,7 +37,7 @@ router.post('/', [auth, [
 ]], async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors });
+        return res.status(400).json(errors);
     }
     const {
         company,
@@ -134,7 +135,7 @@ router.get('/user/:id', async (req, res) => {
 router.delete('/', auth, async (req, res) => {
     try {
         // @todo - delete users posts
-
+        await Post.deleteMany({ user: req.user.id});
         // Remove profile
         await Profile.findOneAndRemove({ user: req.user.id });
         // Remove user
@@ -161,7 +162,7 @@ router.put('/experience', [auth, [
 ]], async (req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
-        return res.status(400).json({ errors });
+        return res.status(400).json(errors);
     }
     const {
         title,
@@ -185,10 +186,10 @@ router.put('/experience', [auth, [
         const profile = await Profile.findOne({ user: req.user.id}).select('experience');
         profile.experience.unshift(fields);
         await profile.save();
-        return res.status(200).json({ msg: "Experience added!"});
+        return res.status(200).json(profile);
     } catch (err) {
         console.error(err.message);
-        return res.status(500).json({ msg: "Server error!"});
+        return res.status(500).json({errors:[{ msg: "Server error!"}]});
     }    
 });
 
@@ -225,7 +226,7 @@ router.put('/education', [auth, [
 ]], async (req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
-        return res.status(400).json({ errors });
+        return res.status(400).json(errors);
     }
     const {
         school,
@@ -249,10 +250,10 @@ router.put('/education', [auth, [
         const profile = await Profile.findOne({ user: req.user.id}).select('education');
         profile.education.unshift(fields);
         await profile.save();
-        return res.status(200).json({ msg: "Education added!"});
+        return res.status(200).json(profile);
     } catch (err) {
         console.error(err.message);
-        return res.status(500).json({ msg: "Server error!"});
+        return res.status(500).json({erros: [{ msg: "Server error!"}]});
     }    
 });
 

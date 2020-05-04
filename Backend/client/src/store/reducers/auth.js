@@ -35,12 +35,14 @@ const authReducer = (state = initialState, action) => {
         case actionTypes.LOAD_USER_FAIL:
         case actionTypes.LOGIN_FAIL:
         case actionTypes.LOGOUT:
+        case actionTypes.DELETE_ACCOUNT_SUCCESS:
             localStorage.clear();
             return {
                 ...state,
                 token: null,
                 isAuthenticated: false,
-                loading: false
+                loading: false,
+                user: null
             }
         default: return state;
     }

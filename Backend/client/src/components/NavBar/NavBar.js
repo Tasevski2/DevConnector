@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as actions from '../../store/actions/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const NavBar = (props) => {
     let links = <ul>
@@ -15,6 +15,7 @@ const NavBar = (props) => {
 
     if (props.isAuthenticated) {
         links = <ul>
+            <li><Link to="/dashboard"><FontAwesomeIcon icon={faUser} />     <span className="hide-sm">Dashboard</span></Link></li>
             <li><Link onClick={props.logout} to="/"><FontAwesomeIcon icon={faSignOutAlt} />     <span className="hide-sm">Logout</span></Link></li>
         </ul>;
     }

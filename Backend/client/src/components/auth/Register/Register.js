@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as actions from '../../../store/actions/index';
 
 const Register = (props) => {
@@ -28,10 +28,6 @@ const Register = (props) => {
             props.register(formData.name, formData.email, formData.password);
         }
         e.preventDefault();
-    }
-
-    if(props.isAuthenticated) {
-        return <Redirect to='/dashboard'/>
     }
 
     return (
@@ -88,14 +84,8 @@ const Register = (props) => {
 Register.propTypes = {
     setAlert: PropTypes.func,
     register: PropTypes.func.isRequired,
-    isAuthenticated: PropTypes.bool
 }
 
-const mapStateToProps = state => {
-    return {
-        isAuthenticated: state.auth.isAuthenticated
-    }
-}
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -104,4 +94,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(null, mapDispatchToProps)(Register);

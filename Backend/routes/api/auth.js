@@ -13,6 +13,7 @@ const User = require('../../models/User');
 // @desc    Return single user
 // @access  Public
 router.get('/', auth, async (req, res) => {
+    
     try {
         const user = await User.findOne({ _id: req.user.id }).select('-password');
         if(!user) {

@@ -2,11 +2,17 @@ export {
     register,
     loadUser,
     login,
-    logout
+    logout,
+    deleteAccount
 } from './auth';
 
 export {
-    profileFetch
+    profileFetch,
+    profileCreate,
+    addExperienceProfile,
+    addEducationProfile,
+    deleteExperience,
+    deleteEducation
 } from './profile';
 
 export {

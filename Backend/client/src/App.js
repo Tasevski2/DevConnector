@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, lazy, Suspense } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './App.css';
@@ -9,9 +9,14 @@ import Alerts from './components/Alerts/Alerts';
 import Landing from './components/Landing/Landing';
 import Layout from './components/Layout/Layout';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import PublicRoute from './components/PublicRoute/PublicRoute';
 // import Dashboard from './components/Dashboard/Dashboard';
 const Dashboard = lazy(() => import('./components/Dashboard/Dashboard'));
 
+const CreateProfile = lazy(() => import('./components/profile-forms/CreateProfile/CreateProfile'));
+const EditProfile = lazy(() => import('./components/profile-forms/EditProfile/EditProfile'));
+const AddExperience = lazy(() => import('./components/profile-forms/AddExperience/AddExperience'));
+const AddEducation = lazy(() => import('./components/profile-forms/AddEducation/AddEducation'));
 const Login = lazy(() => import('./components/auth/Login/Login'));
 const Register = lazy(() => import('./components/auth/Register/Register'));
 
@@ -29,14 +34,19 @@ function App(props) {
   return (
     <Fragment>
       <Layout>
-        <Route exact path='/' component={Landing} />
+      
         <section className="container">
           <Alerts />
           <Suspense fallback={<p>Loading...</p>} >
             <Switch>
-              <Route exact path='/login' component={Login} />
-              <Route exact path='/register' component={Register} />
+              <PublicRoute exact path='/login' component={Login} />
+              <PublicRoute exact path='/' component={Landing} />
+              <PublicRoute exact path='/register' component={Register} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
+              <PrivateRoute exact path='/create-profile' component={CreateProfile}/>
+              <PrivateRoute exact path='/edit-profile' component={EditProfile}/>
+              <PrivateRoute exact path='/add-experience' component={AddExperience} />
+              <PrivateRoute exact path='/add-education' component={AddEducation} />
               <Redirect to='/' />
             </Switch>
           </Suspense>

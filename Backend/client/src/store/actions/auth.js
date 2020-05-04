@@ -114,7 +114,6 @@ export const login = (email, password) => {
             dispatch(loginSuccessAction(res.data.token));
             dispatch(loadUser());
         } catch (err) {
-            console.log(err);
             const errors = err.response.data.errors;
             if(errors) errors.forEach(error => 
                 dispatch(actions.setAlert(error.msg, 'danger')));
@@ -123,8 +122,47 @@ export const login = (email, password) => {
     }
 }
 
-export const logout = () => {
+const logoutAction = () => {
     return {
         type: actionTypes.LOGOUT
+    }
+}
+
+const deleteProfileLogoutAction = () => {
+    return {
+        type: actionTypes.DELETE_PROFILE_LOGOUT
+    }
+}
+
+export const logout = () => {
+    return dispatch => {
+        dispatch(deleteProfileLogoutAction());
+        dispatch(logoutAction());
+    }
+}
+
+const deleteAccountFail = () => {
+    return {
+        type: actionTypes.DELETE_ACCOUNT_FAIL
+    }
+}
+
+const deleteAccountSuccess = () => {
+    return {
+        type: actionTypes.DELETE_ACCOUNT_SUCCESS
+    }
+}
+
+export const deleteAccount = () => {
+    return async dispatch => {
+        if(window.confirm('Are you sure about deleting your account?')) {
+            try {
+                const res = await axios.delete('/api/profile');
+                dispatch(deleteAccountSuccess());
+                dispatch(actions.setAlert('Your account has been permanently deleted!', 'danger'));
+            } catch (err) {
+                dispatch(actions.setAlert('Something went wrong!', 'danger'));
+            }
+        }
     }
 }
