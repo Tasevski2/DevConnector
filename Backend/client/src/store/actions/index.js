@@ -8,6 +8,9 @@ export {
 
 export {
     profileFetch,
+    getAllProfiles,
+    getProfileById,
+    getReposByUserName,
     profileCreate,
     addExperienceProfile,
     addEducationProfile,

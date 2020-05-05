@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, lazy, Suspense } from 'react';
-import { Switch, Redirect } from 'react-router-dom';
+import { Switch, Redirect, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './App.css';
@@ -19,6 +19,8 @@ const AddExperience = lazy(() => import('./components/profile-forms/AddExperienc
 const AddEducation = lazy(() => import('./components/profile-forms/AddEducation/AddEducation'));
 const Login = lazy(() => import('./components/auth/Login/Login'));
 const Register = lazy(() => import('./components/auth/Register/Register'));
+const Profiles = lazy(() => import('./components/Profiles/Profiles'));
+const Profile = lazy(() => import('./components/Profile/Profile'));
 
 
 
@@ -47,6 +49,8 @@ function App(props) {
               <PrivateRoute exact path='/edit-profile' component={EditProfile}/>
               <PrivateRoute exact path='/add-experience' component={AddExperience} />
               <PrivateRoute exact path='/add-education' component={AddEducation} />
+              <Route exact path='/profiles' component={Profiles} />
+              <Route exact path='/profile/:id' component={Profile} />
               <Redirect to='/' />
             </Switch>
           </Suspense>

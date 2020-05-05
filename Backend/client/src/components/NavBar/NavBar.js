@@ -8,7 +8,6 @@ import { faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const NavBar = (props) => {
     let links = <ul>
-        <li><Link to="#">Developers</Link></li>
         <li><Link to="/register">Register</Link></li>
         <li><Link to="/login">Login</Link></li>
     </ul>;
@@ -26,6 +25,7 @@ const NavBar = (props) => {
                     <Link to="/"><i className="fas fa-code"></i> DevConnector</Link>
                 </h1>
                 <ul>
+                <li><Link to="/profiles">Developers</Link></li>
                     {links}
                 </ul>
             </nav>
