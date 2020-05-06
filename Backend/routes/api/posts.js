@@ -30,7 +30,7 @@ router.post('/', [auth, [
         };
         const post = new Post(fields);
         post.save();
-        res.status(200).json({ msg: 'Post created!'});
+        res.status(200).json(post);
     } catch (err) {
         console.log(err.message);
         return res.status(500).json({ msg: "Server error!"});
@@ -99,8 +99,8 @@ router.put('/like/:post_id', auth, async (req, res) => {
 
         post.likes.unshift({ user: req.user.id});
         await post.save();
-
-        return res.status(200).json({post});
+        // return res.status(200).json(newLikes); Podobra opcija zatoa sto ima pomalku rabota na front-endot
+        return res.status(200).json(req.user.id);
 
     } catch (err) {
         console.log(err.message);
@@ -121,8 +121,8 @@ router.delete('/unlike/:post_id', auth, async (req, res) => {
 
         post.likes = [...newLikes];
         await post.save();
-
-        return res.status(200).json({post});
+        // return res.status(200).json(newLikes); Podobra opcija zatoa sto ima pomalku rabota na front-endot
+        return res.status(200).json(req.user.id);
 
     } catch (err) {
         console.log(err.message);
@@ -153,7 +153,7 @@ router.put('/comment/:post_id', [ auth, [
         post.comments.push(comment);
         await post.save();
 
-        res.status(200).json({ msg: "Comment added!"});
+        res.status(200).json(comment);
     } catch (err) {
         console.log(err.message);
         const validate = mongoose.isValidObjectId(req.params.post_id);
@@ -162,7 +162,7 @@ router.put('/comment/:post_id', [ auth, [
     }
 });
 
-// @route     DELETE api/posts/comment/:post_id
+// @route     DELETE api/posts/comment/:post_id/:comment_id
 // @desc      Delete a comment by the post user or the comment user
 // @access    Private
 router.delete('/comment/:post_id/:comment_id', auth, async (req, res) => {
@@ -171,12 +171,12 @@ router.delete('/comment/:post_id/:comment_id', auth, async (req, res) => {
         if(!post) return res.status(400).json({ msg: "Post not found!"});
         const comment = post.comments.filter(comment => comment._id.toString() === req.params.comment_id).length;
         if (comment <= 0) return res.status(400).json({ msg: "Comment not found!" });
-        
         // Check if the post owner is the one who is deleting
-        if (post.user.toString() !== req.user.id) return res.status(400).json({ msg: "You can't delete someone's else comment!" });
+        // if (post.user.toString() !== req.user.id) return res.status(400).json({ msg: "You can't delete someone's else comment!" });
 
         // Check if the comment owner is deleting his comment
-        if((post.comments.filter(comment => comment.user.toString() === req.user.id).length < 0) && (post.user !== req.user.id)) return res.status(400).json({ msg: "You can't delete someone's else comment!"});
+        // if((post.comments.filter(comment => comment.user.toString() === req.user.id).length < 0) && (post.user !== req.user.id)) return res.status(400).json({ msg: "You can't delete someone's else comment!"});
+        if(post.comments.filter(comment => comment.user.toString() === req.user.id).length < 0) return res.status(400).json({ msg: "You can't delete someone's else comment!"});
 
 
         const newComments = post.comments.filter(comment => comment._id.toString() !== req.params.comment_id);

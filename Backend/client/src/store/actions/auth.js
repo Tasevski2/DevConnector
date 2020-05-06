@@ -73,6 +73,7 @@ export const loadUser = () => {
 
             dispatch(loadUserSuccessAction(res.data));
         } catch (err) {
+            console.log(err.response);
             dispatch(loadUserFailAction());
         }
     }

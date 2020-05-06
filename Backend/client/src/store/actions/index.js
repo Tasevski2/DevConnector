@@ -21,3 +21,14 @@ export {
 export {
     setAlert
 } from './alert';
+
+export {
+    getAllPosts,
+    getSinglePost,
+    likeAPost,
+    unlikePost,
+    deletePost,
+    createPost,
+    addComment,
+    deleteComment
+} from './post';

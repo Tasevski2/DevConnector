@@ -14,6 +14,7 @@ const NavBar = (props) => {
 
     if (props.isAuthenticated) {
         links = <ul>
+            <li><Link to='/posts'>Posts</Link></li>
             <li><Link to="/dashboard"><FontAwesomeIcon icon={faUser} />     <span className="hide-sm">Dashboard</span></Link></li>
             <li><Link onClick={props.logout} to="/"><FontAwesomeIcon icon={faSignOutAlt} />     <span className="hide-sm">Logout</span></Link></li>
         </ul>;

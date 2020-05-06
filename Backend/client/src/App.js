@@ -21,6 +21,8 @@ const Login = lazy(() => import('./components/auth/Login/Login'));
 const Register = lazy(() => import('./components/auth/Register/Register'));
 const Profiles = lazy(() => import('./components/Profiles/Profiles'));
 const Profile = lazy(() => import('./components/Profile/Profile'));
+const Posts = lazy(() => import('./components/posts/Posts'));
+const Post = lazy(() => import('./components/Post/Post'));
 
 
 
@@ -41,7 +43,6 @@ function App(props) {
           <Alerts />
           <Suspense fallback={<p>Loading...</p>} >
             <Switch>
-              <PublicRoute exact path='/login' component={Login} />
               <PublicRoute exact path='/' component={Landing} />
               <PublicRoute exact path='/register' component={Register} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
@@ -49,8 +50,11 @@ function App(props) {
               <PrivateRoute exact path='/edit-profile' component={EditProfile}/>
               <PrivateRoute exact path='/add-experience' component={AddExperience} />
               <PrivateRoute exact path='/add-education' component={AddEducation} />
+              <PrivateRoute exact path='/posts' component={Posts} />
+              <PrivateRoute exact path='/post/:post_id' component={Post}/>
               <Route exact path='/profiles' component={Profiles} />
               <Route exact path='/profile/:id' component={Profile} />
+              <PublicRoute exact path='/login' component={Login} />
               <Redirect to='/' />
             </Switch>
           </Suspense>
